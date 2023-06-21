@@ -1,0 +1,22 @@
+<head>
+  {{template "head"}}
+</head>
+<body>
+
+<div class="container-fluid ">
+<div class="row justify-content-center">
+
+<div class="col-5 shadow p-3 mt-3 rounded">
+<h1 class="text-center display-4">{{.Title}}</h1>
+
+<a class="btn bg-primary text-light mb-5" href="/edit/{{.Title}}">Edit</a>
+
+
+{{ .BodyHTML}}
+
+</div>
+</div>
+</div>
+
+</body>
+<html>
