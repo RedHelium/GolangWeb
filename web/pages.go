@@ -7,6 +7,7 @@ import (
 	"web/packages/extensions"
 )
 
+// Wiki markdown page
 type Page struct {
 	Title    string
 	BodyHTML template.HTML
@@ -20,16 +21,10 @@ func (p *Page) save() error {
 	return os.WriteFile("pages/"+filename, p.Body, 0600)
 }
 
-// Remove page
-// func (p *Page) remove() error {
-
-// 	return os.Remove(p.Title)
-// }
-
 // Load page by title
 func loadPage(title string) (*Page, error) {
-	filename := title + ".md"
-	body, err := os.ReadFile("pages/" + filename)
+	filename := title + PAGE_EXTENSION
+	body, err := os.ReadFile(PAGE_FOLDER + filename)
 
 	if err != nil {
 		return nil, err
@@ -39,6 +34,7 @@ func loadPage(title string) (*Page, error) {
 
 }
 
+// Convert array bytes file with markdown in HTML
 func loadMarkdownPage(title string) (*Page, error) {
 
 	filename := title + ".md"
@@ -50,8 +46,9 @@ func loadMarkdownPage(title string) (*Page, error) {
 	return &Page{Title: title, BodyHTML: template.HTML(extensions.MDToHTML(body))}, nil
 }
 
+// Render page by template name
 func renderPage(w http.ResponseWriter, templateName string, p *Page) {
-	t, err := template.ParseFiles("templates/"+templateName+".html", "templates/head.html")
+	t, err := template.ParseFiles(TEMPLATE_FOLDER+templateName+".html", TEMPLATE_FOLDER+"head.html", TEMPLATE_FOLDER+"navigation.html", TEMPLATE_FOLDER+"footer.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
